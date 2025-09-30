@@ -1,0 +1,13 @@
+2025-09-29 09:15:12 - ERROR - Tentativa de login falhou para o usuário: 
+2025-09-29 09:16:18 - ERROR - Tentativa de login falhou para o usuário: naiara
+2025-09-29 21:30:43 - ERROR - Tentativa de login falhou para o usuário: naiara
+2025-09-29 21:30:59 - ERROR - Tentativa de login falhou para o usuário: naiara
+2025-09-29 21:35:41 - ERROR - Tentativa de login falhou: naiara
+2025-09-29 21:36:06 - ERROR - Tentativa de login falhou: naiara
+2025-09-29 21:36:08 - ERROR - Tentativa de login falhou: naiara
+2025-09-29 21:36:15 - ERROR - Tentativa de login falhou: naiara
+2025-09-29 21:36:24 - ERROR - Tentativa de login falhou: naiara.fardo@gmail.com
+2025-09-29 21:36:26 - ERROR - Tentativa de login falhou: naiara.fardo@gmail.com
+2025-09-29 21:36:33 - ERROR - Tentativa de login falhou: naiara
+2025-09-29 21:43:04 - ERROR - Erro ao verificar login: 'DatabaseManager' object has no attribute 'check_user_credentials'
+2025-09-29 21:44:20 - ERROR - Erro ao verificar login: 'DatabaseManager' object has no attribute 'check_user_credentials'
