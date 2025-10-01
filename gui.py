@@ -7,18 +7,19 @@ from logger import log_error
 
 # Configurações de cores e estilos
 COLORS = {
-    'primary': '#8B4A9C',      # Roxo principal
-    'secondary': '#D8BFD8',    # Lavanda
-    'accent': '#FF69B4',       # Rosa vibrante
-    'background': '#F8F4FF',   # Fundo claro
-    'surface': '#FFFFFF',      # Branco
-    'text_primary': '#2D1B3D', # Texto escuro
-    'text_secondary': '#6B4C7A', # Texto médio
-    'success': '#4CAF50',      # Verde
-    'error': '#F44336',        # Vermelho
-    'warning': '#FF9800'       # Laranja
+    'primary': '#8B4A9C',     
+    'secondary': '#D8BFD8',
+    'accent': '#FF69B4',
+    'background': '#F8F4FF',
+    'surface': '#FFFFFF',
+    'text_primary': '#2D1B3D',
+    'text_secondary': '#6B4C7A',
+    'success': '#4CAF50',
+    'error': '#F44336',
+    'warning': '#FF9800'
 }
 
+# Configuração das fontes
 FONTS = {
     'title': ('Segoe UI', 18, 'bold'),
     'subtitle': ('Segoe UI', 14, 'bold'),
@@ -27,9 +28,11 @@ FONTS = {
     'small': ('Segoe UI', 9)
 }
 
+# Classe para configurações de estilo 
+
+#Botão personalizado 
 class StyledButton(tk.Button):
     def __init__(self, parent, text, command=None, style='primary', **kwargs):
-        # Configurações de estilo baseadas no tipo
         if style == 'primary':
             bg_color = COLORS['primary']
             fg_color = 'white'
@@ -68,8 +71,6 @@ class StyledButton(tk.Button):
             **kwargs
         )
         
-        # Efeitos de hover
-        self.bind('<Enter>', self._on_enter)
         self.bind('<Leave>', self._on_leave)
         self.original_bg = bg_color
         self.hover_bg = active_bg
@@ -80,6 +81,7 @@ class StyledButton(tk.Button):
     def _on_leave(self, event):
         self.config(bg=self.original_bg)
 
+#Campod de entrada
 class StyledEntry(tk.Entry):
     def __init__(self, parent, placeholder="", **kwargs):
         super().__init__(
@@ -119,6 +121,7 @@ class StyledEntry(tk.Entry):
         value = self.get()
         return value if value != self.placeholder else ""
 
+#Janela de Login
 class LoginWindow(tk.Toplevel):
     def __init__(self, master, db_manager, on_login_success):
         super().__init__(master)
@@ -131,6 +134,7 @@ class LoginWindow(tk.Toplevel):
         self.center_window()
         self.create_widgets()
 
+    #Configurações da janela
     def center_window(self):
         self.update_idletasks()
         w, h = self.winfo_width(), self.winfo_height()
@@ -139,11 +143,9 @@ class LoginWindow(tk.Toplevel):
         self.geometry(f'{w}x{h}+{x}+{y}')
 
     def create_widgets(self):
-        # Container principal
         main_frame = tk.Frame(self, bg=COLORS['background'])
         main_frame.pack(expand=True, fill='both', padx=40, pady=30)
         
-        # Título
         title_label = tk.Label(
             main_frame,
             text="🎭 Perucas Diferentonas",
@@ -162,14 +164,13 @@ class LoginWindow(tk.Toplevel):
         )
         subtitle_label.pack(pady=(0, 30))
         
-        # Card de login
         login_card = tk.Frame(main_frame, bg=COLORS['surface'], relief='solid', bd=1)
         login_card.pack(fill='x', pady=10)
         
         card_inner = tk.Frame(login_card, bg=COLORS['surface'])
         card_inner.pack(padx=30, pady=30)
         
-        # Campo usuário
+        #Campos de entrada
         tk.Label(
             card_inner,
             text="Usuário",
@@ -181,7 +182,6 @@ class LoginWindow(tk.Toplevel):
         self.username_entry = StyledEntry(card_inner, placeholder="Digite seu usuário")
         self.username_entry.pack(fill='x', pady=(0, 15), ipady=8)
         
-        # Campo senha
         tk.Label(
             card_inner,
             text="Senha",
@@ -190,10 +190,10 @@ class LoginWindow(tk.Toplevel):
             fg=COLORS['text_primary']
         ).pack(anchor='w', pady=(0, 5))
         
-        self.password_entry = StyledEntry(card_inner, show="*", placeholder="Digite sua senha")
+        self.password_entry = StyledEntry(card_inner, show="*")
         self.password_entry.pack(fill='x', pady=(0, 20), ipady=8)
         
-        # Botões
+        # Botões de login e para abrir a janela de criar conta
         button_frame = tk.Frame(card_inner, bg=COLORS['surface'])
         button_frame.pack(fill='x')
         
@@ -203,6 +203,7 @@ class LoginWindow(tk.Toplevel):
         signup_btn = StyledButton(button_frame, "Criar Conta", self.open_signup, style='secondary')
         signup_btn.pack(fill='x')
 
+    # Valida credenciais do usuário
     def attempt_login(self):
         username = self.username_entry.get_value().strip()
         password = self.password_entry.get_value().strip()
@@ -223,9 +224,11 @@ class LoginWindow(tk.Toplevel):
             messagebox.showerror("Erro", f"Não foi possível verificar o login: {e}")
             log_error(f"Erro ao verificar login: {e}")
 
+    # Abre janela de cadastro
     def open_signup(self):
         SignUpWindow(self.master, self.db_manager)
 
+#Janela para cadastro
 class SignUpWindow(tk.Toplevel):
     def __init__(self, master, db_manager):
         super().__init__(master)
@@ -237,6 +240,7 @@ class SignUpWindow(tk.Toplevel):
         self.center_window()
         self.create_widgets()
 
+    # Configurações da janela de cadastro
     def center_window(self):
         self.update_idletasks()
         w, h = self.winfo_width(), self.winfo_height()
@@ -245,11 +249,9 @@ class SignUpWindow(tk.Toplevel):
         self.geometry(f'{w}x{h}+{x}+{y}')
 
     def create_widgets(self):
-        # Container principal
         main_frame = tk.Frame(self, bg=COLORS['background'])
         main_frame.pack(expand=True, fill='both', padx=40, pady=30)
         
-        # Título
         title_label = tk.Label(
             main_frame,
             text="Criar Nova Conta",
@@ -259,14 +261,13 @@ class SignUpWindow(tk.Toplevel):
         )
         title_label.pack(pady=(0, 30))
         
-        # Card de cadastro
         signup_card = tk.Frame(main_frame, bg=COLORS['surface'], relief='solid', bd=1)
         signup_card.pack(fill='x', pady=10)
         
         card_inner = tk.Frame(signup_card, bg=COLORS['surface'])
         card_inner.pack(padx=30, pady=30)
         
-        # Campo email
+        # Campos 
         tk.Label(
             card_inner,
             text="Email",
@@ -278,7 +279,6 @@ class SignUpWindow(tk.Toplevel):
         self.email_entry = StyledEntry(card_inner, placeholder="Digite seu email")
         self.email_entry.pack(fill='x', pady=(0, 15), ipady=8)
         
-        # Campo usuário
         tk.Label(
             card_inner,
             text="Usuário",
@@ -290,7 +290,6 @@ class SignUpWindow(tk.Toplevel):
         self.username_entry = StyledEntry(card_inner, placeholder="Escolha um usuário")
         self.username_entry.pack(fill='x', pady=(0, 15), ipady=8)
         
-        # Campo senha
         tk.Label(
             card_inner,
             text="Senha",
@@ -302,10 +301,10 @@ class SignUpWindow(tk.Toplevel):
         self.password_entry = StyledEntry(card_inner, show="*", placeholder="Crie uma senha")
         self.password_entry.pack(fill='x', pady=(0, 20), ipady=8)
         
-        # Botão
         create_btn = StyledButton(card_inner, "Criar Conta", self.attempt_create, style='success')
         create_btn.pack(fill='x')
 
+    # Cria um novo usuário
     def attempt_create(self):
         email = self.email_entry.get_value()
         username = self.username_entry.get_value()
@@ -322,6 +321,7 @@ class SignUpWindow(tk.Toplevel):
             messagebox.showerror("Erro", f"Não foi possível criar a conta: {e}")
             log_error(f"Erro ao criar conta: {e}")
 
+#Janela principal
 class MainWindow(tk.Toplevel):
     def __init__(self, master, db_manager):
         super().__init__(master)
@@ -333,6 +333,7 @@ class MainWindow(tk.Toplevel):
         self.create_widgets()
         self.load_products()
 
+    # Configura janela principal
     def center_window(self):
         self.update_idletasks()
         w, h = self.winfo_width(), self.winfo_height()
@@ -340,8 +341,8 @@ class MainWindow(tk.Toplevel):
         y = (self.winfo_screenheight() // 2) - (h // 2)
         self.geometry(f'{w}x{h}+{x}+{y}')
 
+    # Cria e configura a janela
     def create_widgets(self):
-        # Header
         header_frame = tk.Frame(self, bg=COLORS['primary'], height=80)
         header_frame.pack(fill='x')
         header_frame.pack_propagate(False)
@@ -367,11 +368,9 @@ class MainWindow(tk.Toplevel):
         )
         subtitle_label.pack(side='left', padx=(10, 0))
         
-        # Container principal
         main_container = tk.Frame(self, bg=COLORS['background'])
         main_container.pack(expand=True, fill='both', padx=30, pady=20)
         
-        # Painel de controles
         controls_frame = tk.Frame(main_container, bg=COLORS['surface'], relief='solid', bd=1)
         controls_frame.pack(fill='x', pady=(0, 20))
         
@@ -387,6 +386,7 @@ class MainWindow(tk.Toplevel):
         )
         controls_title.pack(anchor='w', pady=(0, 15))
         
+        #Botões
         buttons_frame = tk.Frame(controls_inner, bg=COLORS['surface'])
         buttons_frame.pack(fill='x')
         
@@ -395,11 +395,11 @@ class MainWindow(tk.Toplevel):
         StyledButton(buttons_frame, "🗑️ Deletar", self.delete_product, style='danger').pack(side='left', padx=(0, 10))
         StyledButton(buttons_frame, "🔄 Recarregar", self.load_products, style='secondary').pack(side='left')
         
-        # Container de conteúdo (lista + gráfico)
+        # Container de conteúdo lista e gráfico
         content_frame = tk.Frame(main_container, bg=COLORS['background'])
         content_frame.pack(expand=True, fill='both')
         
-        # Painel da lista de produtos
+        # Lista de produtos
         list_frame = tk.Frame(content_frame, bg=COLORS['surface'], relief='solid', bd=1)
         list_frame.pack(side='left', fill='both', expand=True, padx=(0, 10))
         
@@ -414,7 +414,6 @@ class MainWindow(tk.Toplevel):
             fg=COLORS['text_primary']
         ).pack(anchor='w')
         
-        # Área de texto com scrollbar
         text_container = tk.Frame(list_frame, bg=COLORS['surface'])
         text_container.pack(expand=True, fill='both', padx=20, pady=(0, 20))
         
@@ -438,7 +437,7 @@ class MainWindow(tk.Toplevel):
         scrollbar_y.pack(side='right', fill='y')
         scrollbar_x.pack(side='bottom', fill='x')
         
-        # Painel do gráfico
+        # Gráfico
         chart_frame = tk.Frame(content_frame, bg=COLORS['surface'], relief='solid', bd=1, width=500)
         chart_frame.pack(side='right', fill='y')
         chart_frame.pack_propagate(False)
@@ -457,7 +456,7 @@ class MainWindow(tk.Toplevel):
         self.chart_container = tk.Frame(chart_frame, bg=COLORS['surface'])
         self.chart_container.pack(expand=True, fill='both', padx=20, pady=(0, 20))
         
-        # Configurar matplotlib com tema personalizado
+        # Configura biblioteca com tema personalizado
         plt.style.use('default')
         self.fig, self.ax = plt.subplots(figsize=(6, 5))
         self.fig.patch.set_facecolor(COLORS['surface'])
@@ -466,31 +465,32 @@ class MainWindow(tk.Toplevel):
         
         self.plot_sales_data()
 
+    # Carrega produtos
     def load_products(self):
         self.product_list_text.config(state=tk.NORMAL)
         self.product_list_text.delete(1.0, tk.END)
         
-        # Header da tabela
-        header = f"{'ID':<5} {'Nome':<25} {'Preço':<12} {'Estoque':<10} {'Descrição':<40}\n"
-        separator = "─" * 92 + "\n"
+        header = f"{'ID':<5} {'Nome':<25} {'Preço':<12} {'Estoque':<10}\n"
+        separator = "─" * 60 + "\n"
         
         self.product_list_text.insert(tk.END, header)
         self.product_list_text.insert(tk.END, separator)
         
+        #dados
         products = self.db_manager.get_products()
         if products:
             for p in products:
-                name = p['name'][:23] + "..." if len(p['name']) > 23 else p['name']
-                desc = p['description'][:38] + "..." if len(p['description']) > 38 else p['description']
+                name = p['nome'][:23] + "..." if len(p['nome']) > 23 else p['nome']
                 
-                line = f"{p['id']:<5} {name:<25} R$ {p['price']:<8.2f} {p['stock']:<10} {desc:<40}\n"
+                line = f"{p['id']:<5} {name:<25} R$ {p['preco']:<8.2f} {p['estoque']:<10}\n"
                 self.product_list_text.insert(tk.END, line)
         else:
-            self.product_list_text.insert(tk.END, "\n" + " " * 35 + "Nenhum produto cadastrado.\n")
+            self.product_list_text.insert(tk.END, "\n" + " " * 20 + "Nenhum produto cadastrado.\n")
         
         self.product_list_text.config(state=tk.DISABLED)
         self.plot_sales_data()
 
+    # Adiciona produto
     def add_product(self):
         dialog = ProductDialog(self, "Adicionar Produto")
         if dialog.result:
@@ -507,6 +507,7 @@ class MainWindow(tk.Toplevel):
                 log_error(f"Erro ao adicionar produto: {e}")
                 messagebox.showerror("Erro", f"Não foi possível adicionar: {e}")
 
+    # Atualiza produto
     def update_product(self):
         product_id = simpledialog.askinteger("Atualizar Produto", "ID do Produto:")
         if product_id is None:
@@ -528,6 +529,7 @@ class MainWindow(tk.Toplevel):
                 log_error(f"Erro ao atualizar produto {product_id}: {e}")
                 messagebox.showerror("Erro", f"Não foi possível atualizar: {e}")
 
+    # Remove produto
     def delete_product(self):
         product_id = simpledialog.askinteger("Deletar Produto", "ID do Produto:")
         if product_id is None:
@@ -541,38 +543,34 @@ class MainWindow(tk.Toplevel):
                 log_error(f"Erro ao deletar produto {product_id}: {e}")
                 messagebox.showerror("Erro", f"Não foi possível deletar: {e}")
 
+    # Gera gráfico e personaliza
     def plot_sales_data(self):
         self.ax.clear()
         data = self.db_manager.get_sales_data()
         
         if data:
-            names = [d['name'][:15] + "..." if len(d['name']) > 15 else d['name'] for d in data]
-            stock = [d['stock'] for d in data]
+            names = [d['nome'][:15] + "..." if len(d['nome']) > 15 else d['nome'] for d in data]
+            stock = [d['estoque'] for d in data]  
             
-            # Criar gráfico de barras horizontais com cores personalizadas
             colors = [COLORS['primary'], COLORS['accent'], COLORS['secondary'], 
-                     COLORS['success'], COLORS['warning']][:len(names)]
+                    COLORS['success'], COLORS['warning']][:len(names)]
             
             bars = self.ax.barh(names, stock, color=colors, alpha=0.8)
             
-            # Personalizar o gráfico
             self.ax.set_xlabel('Quantidade em Estoque', fontsize=10, color=COLORS['text_primary'])
             self.ax.set_title('Top 5 Produtos por Estoque', fontsize=12, fontweight='bold', 
                             color=COLORS['text_primary'], pad=20)
             
-            # Adicionar valores nas barras
             for i, (bar, value) in enumerate(zip(bars, stock)):
                 self.ax.text(value + max(stock) * 0.01, bar.get_y() + bar.get_height()/2, 
-                           str(value), va='center', fontsize=9, color=COLORS['text_primary'])
+                        str(value), va='center', fontsize=9, color=COLORS['text_primary'])
             
-            # Personalizar eixos
             self.ax.tick_params(colors=COLORS['text_secondary'], labelsize=9)
             self.ax.spines['top'].set_visible(False)
             self.ax.spines['right'].set_visible(False)
             self.ax.spines['left'].set_color(COLORS['text_secondary'])
             self.ax.spines['bottom'].set_color(COLORS['text_secondary'])
             
-            # Adicionar grid sutil
             self.ax.grid(True, axis='x', alpha=0.3, color=COLORS['text_secondary'])
             
         else:
@@ -586,11 +584,11 @@ class MainWindow(tk.Toplevel):
         self.fig.patch.set_facecolor(COLORS['surface'])
         self.canvas.draw_idle()
 
+# Classe para janela adicionar produtos
 class ProductDialog:
     def __init__(self, parent, title):
         self.result = None
         
-        # Criar janela modal
         self.dialog = tk.Toplevel(parent)
         self.dialog.title(title)
         self.dialog.geometry("1000x600")
@@ -599,13 +597,12 @@ class ProductDialog:
         self.dialog.transient(parent)
         self.dialog.grab_set()
         
-        # Centralizar
         self.center_window()
         self.create_widgets()
         
-        # Aguardar resultado
         self.dialog.wait_window()
     
+    # Configura janela
     def center_window(self):
         self.dialog.update_idletasks()
         w, h = self.dialog.winfo_width(), self.dialog.winfo_height()
@@ -613,18 +610,18 @@ class ProductDialog:
         y = (self.dialog.winfo_screenheight() // 2) - (h // 2)
         self.dialog.geometry(f'{w}x{h}+{x}+{y}')
     
+    # Cria interface
     def create_widgets(self):
         main_frame = tk.Frame(self.dialog, bg=COLORS['background'])
         main_frame.pack(expand=True, fill='both', padx=30, pady=20)
         
-        # Card
         card = tk.Frame(main_frame, bg=COLORS['surface'], relief='solid', bd=1)
         card.pack(fill='both', expand=True)
         
         card_inner = tk.Frame(card, bg=COLORS['surface'])
         card_inner.pack(padx=25, pady=25, fill='both', expand=True)
         
-        # Campos
+        # Campos do produto
         fields = [
             ("Nome do Produto", "name"),
             ("Descrição", "description"),
@@ -647,13 +644,13 @@ class ProductDialog:
             entry.pack(fill='x', pady=(0, 15), ipady=8)
             self.entries[field_name] = entry
         
-        # Botões
         button_frame = tk.Frame(card_inner, bg=COLORS['surface'])
         button_frame.pack(fill='x', pady=(10, 0))
         
         StyledButton(button_frame, "Cancelar", self.cancel, style='secondary').pack(side='right', padx=(10, 0))
         StyledButton(button_frame, "Salvar", self.save, style='success').pack(side='right')
     
+    # Salva dados do produto
     def save(self):
         try:
             name = self.entries['name'].get_value().strip()
@@ -661,8 +658,8 @@ class ProductDialog:
             price = float(self.entries['price'].get_value().strip())
             stock = int(self.entries['stock'].get_value().strip())
             
-            if not name or not description:
-                messagebox.showerror("Erro", "Nome e descrição são obrigatórios.")
+            if not name:
+                messagebox.showerror("Erro", "Nome é obrigatório.")
                 return
             
             if price <= 0 or stock < 0:
@@ -680,5 +677,6 @@ class ProductDialog:
         except ValueError:
             messagebox.showerror("Erro", "Preço e estoque devem ser números válidos.")
     
+    #Cancela operação
     def cancel(self):
         self.dialog.destroy()
