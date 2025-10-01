@@ -12,7 +12,6 @@ def setup_logger():
 def log_error(message):
     logging.error(message)
 
-# Exemplo de uso
 if __name__ == "__main__":
     setup_logger()
     try:
